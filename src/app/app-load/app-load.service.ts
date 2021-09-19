@@ -15,9 +15,12 @@ export class AppLoadService {
 
           setTimeout(() => {
             console.log(`initializeApp:: inside setTimeout`);
-            // doing something
 
-            resolve();
+            // console.log("initializeApp: success scenario");
+            // resolve([]);
+
+            console.log("initializeApp: failure scenario");
+            reject("Error during init");
           }, 3000);
         });
   }

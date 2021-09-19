@@ -2,6 +2,22 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.1.
 
+# Initialization Pattern
+
+1. app.module imports the `AppLoadModule` which is responsible for loading app configuration data. For example service FQDN or a settings config.
+
+2. Once `AppLoadModule` loads, Angular checks the module's providers which contain the `APP_INITIALIZER` DI token, which in turn calls the factory methods `init_app` and `get_settings`.
+
+3. When each factory is invoked, the particular service methods are called, e.g, `appLoadService.getSettings();`
+
+4. Based on the promise resolving for each service call, the Angular app continues with App initialization.
+
+5. In this implementation, we don't `reject()` the service calls if an error is thrown as this would cancel the app initialization process. Instead we can call `resolve(error)` and display an appropriate error in the app entry component template. Which allows the app to finish initialization.
+
+_APP_INITIALIZER explanation_
+>Angular suspends the app initialization until all the functions provided by the `APP_INITIALIZER` are run. If any of those intializers return a promise, then the angular waits for it to resolve, before continuing with the App initialization
+> This gives us an opportunity to hook into the initialization process and run some our application custom logic. You can load runtime configuration information. load important data from the backend etc. See: https://angular.io/api/core/APP_INITIALIZER
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
