@@ -16,11 +16,19 @@ export class AppLoadService {
           setTimeout(() => {
             console.log(`initializeApp:: inside setTimeout`);
 
+       
             // console.log("initializeApp: success scenario");
             // resolve([]);
+            
+            // resolve with error object, allow init to complete and pass error state
+            console.log("initializeApp: error scenario");
+            const error = { error: "app init error", message: "Failed to load app configuration" };
+            APP_SETTINGS.initError = error;
+            resolve(error);
 
-            console.log("initializeApp: failure scenario");
-            reject("Error during init");
+            // reject promise will cancel init
+            // console.log("initializeApp: failure scenario");
+            // reject("Error during init");
           }, 3000);
         });
   }
