@@ -18,13 +18,23 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 > The following example shows how an app initializer function can be use with NgRx to dispatch an action, which will trigger an effect and service call. Which the initializer subscribes to the side effect state `isLoaded` or `hasInitError`.
 
-Credit: https://gist.github.com/matheo/731603757d4781e31605c8d6a61684f3, https://mohy-eid.medium.com/initialize-angular-app-with-ngrx-app-initializer-6556b819e0e3
+Credit: https://gist.github.com/matheo/731603757d4781e31605c8d6a61684f3, https://github.com/mohyeid/ngrxInitializer
 
 ```JavaScript
 
 /**
  * App Initializer with Effects
  */
+
+providers: [
+    LoaderEffect,
+    {
+      provide: APP_INITIALIZER, 
+      useFactory: initApplication,
+      multi: true,
+      deps: [[new Inject(Store)]]
+    }
+  ],
 
 export function initApplication(store: Store<AppState>) {
   return () =>
@@ -40,7 +50,7 @@ export function initApplication(store: Store<AppState>) {
             loaded$.next();
             resolve();
           } else if (hasInitError) {
-              
+
             loaded$.next();
             resolve();
           }
