@@ -1,5 +1,6 @@
 export let APP_SETTINGS = {
-    connectionString: '',
-    defaultImageUrl: '',
-    initError: undefined,
-}
+  connectionString: "",
+  defaultImageUrl: "",
+  initError: undefined,
+  initialized: false,
+};
