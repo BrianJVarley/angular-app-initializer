@@ -14,8 +14,45 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 5. In this implementation, we don't `reject()` the service calls if an error is thrown as this would cancel the app initialization process. Instead we can call `resolve(error)` and display an appropriate error in the app entry component template using APP_SETTINGS data. Which allows the app to finish initialization.
 
+# NgRx Approach
+
+> The following example shows how an app initializer function can be use with NgRx to dispatch an action, which will trigger an effect and service call. Which the initializer subscribes to the side effect state `isLoaded` or `hasInitError`.
+
+Credit: https://gist.github.com/matheo/731603757d4781e31605c8d6a61684f3, https://mohy-eid.medium.com/initialize-angular-app-with-ngrx-app-initializer-6556b819e0e3
+
+```JavaScript
+
+/**
+ * App Initializer with Effects
+ */
+
+export function initApplication(store: Store<AppState>) {
+  return () =>
+    new Promise(resolve => {
+      const loaded$ = new Subject();
+      store.dispatch(new LoadSystem());
+      store
+        .select((state:AppState) => state.isLoaded)
+        .withLatestFrom(this.store.pipe(select(selectHasInitError))),
+        .pipe(takeUntil(loaded$))
+        .subscribe(([loaded, hasInitError]) => {
+          if (loaded) {
+            loaded$.next();
+            resolve();
+          } else if (hasInitError) {
+              
+            loaded$.next();
+            resolve();
+          }
+        });
+    });
+}
+
+```
+
 _APP_INITIALIZER explanation_
->Angular suspends the app initialization until all the functions provided by the `APP_INITIALIZER` are run. If any of those intializers return a promise, then the angular waits for it to resolve, before continuing with the App initialization
+
+> Angular suspends the app initialization until all the functions provided by the `APP_INITIALIZER` are run. If any of those intializers return a promise, then the angular waits for it to resolve, before continuing with the App initialization
 > This gives us an opportunity to hook into the initialization process and run some our application custom logic. You can load runtime configuration information. load important data from the backend etc. See: https://angular.io/api/core/APP_INITIALIZER
 
 ## Development server
