@@ -12,7 +12,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 4. Based on the promise resolving for each service call, the Angular app continues with App initialization.
 
-5. In this implementation, we don't `reject()` the service calls if an error is thrown as this would cancel the app initialization process. Instead we can call `resolve(error)` and display an appropriate error in the app entry component template. Which allows the app to finish initialization.
+5. In this implementation, we don't `reject()` the service calls if an error is thrown as this would cancel the app initialization process. Instead we can call `resolve(error)` and display an appropriate error in the app entry component template using APP_SETTINGS data. Which allows the app to finish initialization.
 
 _APP_INITIALIZER explanation_
 >Angular suspends the app initialization until all the functions provided by the `APP_INITIALIZER` are run. If any of those intializers return a promise, then the angular waits for it to resolve, before continuing with the App initialization
