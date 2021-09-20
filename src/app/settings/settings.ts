@@ -1,4 +1,5 @@
 export let APP_SETTINGS = {
     connectionString: '',
-    defaultImageUrl: ''
+    defaultImageUrl: '',
+    initError: undefined,
 }
